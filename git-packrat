@@ -1,0 +1,60 @@
+#!/bin/sh
+
+bail() {
+  echo $*
+  exit 111
+}
+
+repo_exists() {
+  if [ -n "$1" ]; then
+    arg="--git-dir=$1"
+  else
+    arg=""
+  fi
+  git $arg symbolic-ref HEAD > /dev/null 2> /dev/null
+}
+
+init() {
+  repo=$1
+  remote=$2
+  repo_exists $repo || git init --bare $repo
+  git ls-remote $remote > /dev/null 2> /dev/null ||
+    git remote add $remote $repo
+}
+
+move_branch_to_remote() {
+  git push $2 $1 && git branch -D $1
+}
+
+current_branch() {
+  git symbolic-ref HEAD | cut -d/ -f3-
+}
+
+branch_is_merged() {
+  git branch --no-color --merged | cut -c3- | grep -q "^$1$"
+}
+
+attic_repo() {
+  project_root=$(git rev-parse --show-toplevel)
+  project_name=$(basename $project_root)
+  echo "$project_root/../attic-$project_name.git"
+}
+
+get_attic_remote() {
+  remote=$(git config packrat.remote-name || echo attic)
+  remote=$(git check-ref-format --allow-onelevel --normalize $remote) ||
+    bail "Your configured packrat.remote-name '$remote' isn't legal. Sorry!"
+  echo $remote
+}
+
+repo_exists || bail "You do not seem to be in a git repository. Sorry!"
+
+branch=$1
+
+test -z $branch && bail "usage: git packrat [branchname]"
+test "$(current_branch)" = "$branch" && bail "I won't let you pack away the current branch. Sorry!"
+branch_is_merged $branch && bail "This branch is merged already! Just delete it."
+
+attic_remote=$(get_attic_remote)
+init $(attic_repo) $attic_remote
+move_branch_to_remote $branch $attic_remote
