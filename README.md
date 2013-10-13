@@ -26,7 +26,12 @@ as you would any remote branch:
 Installation
 ------------
 
-Just put `git-packrat` somewhere in your `$PATH`. May I suggest `~/bin/`?
+If you use homebrew:
+
+    % brew tap drench/moregit
+    % brew install git-packrat
+
+Otherwise, just put `git-packrat` somewhere in your `$PATH`. May I suggest `~/bin/`?
 
 License
 -------
