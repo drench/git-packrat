@@ -1,0 +1,39 @@
+git-packrat(1) -- Put old branches in your attic, where you can forget about them
+=================================================================================
+
+## SYNOPSYS
+
+`git packrat` [BRANCH]
+
+## DESCRIPTION
+
+Do you like branches? Even the ones that went nowhere?
+
+If you hate seeing your `git branch` output cluttered with dead
+branches, yet can't bring yourself to just throwing that
+never-to-be-merged code away, `git packrat` may be for you.
+
+## USAGE
+
+`git packrat` takes a single argument: the name of a local branch.
+To move a branch named `some-dead-branch` into its 'attic':
+
+    git packrat some-dead-branch
+
+This creates an `attic` bare repo in a parallel directory,
+`push`es the branch to it, and finally deletes the
+local branch.
+
+If you ever need to get it back, just check it out as you would any remote
+branch:
+
+    git checkout attic/some-dead-branch
+
+## AUTHOR
+
+Daniel Rench
+
+## SEE ALSO
+
+git(1), git-branch(1), git-checkout(1), git-remote(1),
+[git-packrat on github](https://github.com/drench/git-packrat)

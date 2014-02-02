@@ -1,0 +1,51 @@
+.\" generated with Ronn/v0.7.3
+.\" http://github.com/rtomayko/ronn/tree/0.7.3
+.
+.TH "GIT\-PACKRAT" "1" "January 2014" "" ""
+.
+.SH "NAME"
+\fBgit\-packrat\fR \- Put old branches in your attic, where you can forget about them
+.
+.SH "SYNOPSYS"
+\fBgit packrat\fR [BRANCH]
+.
+.SH "DESCRIPTION"
+Do you like branches? Even the ones that went nowhere?
+.
+.P
+If you hate seeing your \fBgit branch\fR output cluttered with dead branches, yet can\'t bring yourself to just throwing that never\-to\-be\-merged code away, \fBgit packrat\fR may be for you\.
+.
+.SH "USAGE"
+\fBgit packrat\fR takes a single argument: the name of a local branch\. To move a branch named \fBsome\-dead\-branch\fR into its \'attic\':
+.
+.IP "" 4
+.
+.nf
+
+git packrat some\-dead\-branch
+.
+.fi
+.
+.IP "" 0
+.
+.P
+This creates an \fBattic\fR bare repo in a parallel directory, \fBpush\fRes the branch to it, and finally deletes the local branch\.
+.
+.P
+If you ever need to get it back, just check it out as you would any remote branch:
+.
+.IP "" 4
+.
+.nf
+
+git checkout attic/some\-dead\-branch
+.
+.fi
+.
+.IP "" 0
+.
+.SH "AUTHOR"
+Daniel Rench
+.
+.SH "SEE ALSO"
+git(1), git\-branch(1), git\-checkout(1), git\-remote(1), git\-packrat on github \fIhttps://github\.com/drench/git\-packrat\fR
