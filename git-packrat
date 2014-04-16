@@ -19,7 +19,14 @@ init() {
   remote=$2
   repo_exists $repo || git init --bare $repo
   git ls-remote $remote > /dev/null 2> /dev/null ||
-    git remote add $remote $repo
+    init_attic_remote $remote $repo
+}
+
+init_attic_remote() {
+  remote=$1
+  repo=$2
+  git remote add $remote $repo
+  git config remote.$remote.skipDefaultUpdate true
 }
 
 move_branch_to_remote() {
