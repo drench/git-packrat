@@ -30,7 +30,7 @@ init_attic_remote() {
 }
 
 move_branch_to_remote() {
-  git push $2 $1 && git branch -D $1
+  git push $2 $1 --force-with-lease && git branch -D $1
 }
 
 current_branch() {
